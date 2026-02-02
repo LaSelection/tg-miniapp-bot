@@ -7,13 +7,9 @@ const LINKS = {
   vetrina: 'https://laselection.pages.dev',
   instagram: 'https://www.instagram.com/laselectionmb/',
   telegramContact: 'https://t.me/LaSelection1',
-  signal: 'https://signal.me/#eu/wR_E8bmO4PiGf_jumabFfMQJd1Un_gqS9Jg5caGjnaP5fTHxOmZCWZPA89ZQIGiM', 
-  potato: 'https://dympt.org/joinchat/QfEYQgoEycxDeTlcXcZKkA'        
+  signal: 'https://signal.me/#eu/wR_E8bmO4PiGf_jumabFfMQJd1Un_gqS9Jg5caGjnaP5fTHxOmZCWZPA89ZQIGiM',
+  potato: 'https://dympt.org/joinchat/QfEYQgoEycxDeTlcXcZKkA'
 }
-
-// 🔹 IMMAGINE LOGO
-const LOGO_URL =
-  'https://i.imgur.com/3xl6AtX.png'
 
 // =======================
 // START / MENU PRINCIPALE
@@ -24,7 +20,7 @@ bot.start(async (ctx) => {
     : ctx.from.first_name
 
   await ctx.replyWithPhoto(
-    { url: LOGO_URL },
+    { source: './logo.png' }, // ✅ IMMAGINE LOCALE
     {
       caption:
         `✅ Benvenuto ${username}\n` +
@@ -87,7 +83,7 @@ bot.action('INFO', async (ctx) => {
 })
 
 // =======================
-// TORNA AL MENU
+// TORNA AL MENU PRINCIPALE
 // =======================
 bot.action('BACK', async (ctx) => {
   await ctx.answerCbQuery()
@@ -95,7 +91,12 @@ bot.action('BACK', async (ctx) => {
 })
 
 // =======================
+// ERROR HANDLER (ANTI-CRASH)
+// =======================
+bot.catch((err) => {
+  console.error('BOT ERROR:', err)
+})
+
+// =======================
 bot.launch()
 console.log('🤖 Bot avviato')
-
-
