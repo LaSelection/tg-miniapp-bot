@@ -13,7 +13,7 @@ const LINKS = {
 
 // 🔹 IMMAGINE LOGO
 const LOGO_URL =
-  'https://imgur.com/3xl6AtX' // <-- carica il logo e metti il link
+  'https://imgur.com/3xl6AtX.png'
 
 // =======================
 // START / MENU PRINCIPALE
@@ -97,3 +97,4 @@ bot.action('BACK', async (ctx) => {
 // =======================
 bot.launch()
 console.log('🤖 Bot avviato')
+
