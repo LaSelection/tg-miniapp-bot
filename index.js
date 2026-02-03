@@ -2,7 +2,9 @@ const { Telegraf } = require('telegraf')
 
 const bot = new Telegraf(process.env.BOT_TOKEN)
 
-// 🔹 LINK CONFIGURABILI
+// =======================
+// LINK CONFIGURABILI
+// =======================
 const LINKS = {
   vetrina: 'https://laselection.pages.dev',
   instagram: 'https://www.instagram.com/laselectionmb/',
@@ -12,15 +14,15 @@ const LINKS = {
 }
 
 // =======================
-// START / MENU PRINCIPALE
+// FUNZIONE MENU PRINCIPALE
 // =======================
-bot.start(async (ctx) => {
+async function sendMainMenu(ctx) {
   const username = ctx.from.username
     ? `@${ctx.from.username}`
     : ctx.from.first_name
 
   await ctx.replyWithPhoto(
-    { source: './logo.png' }, // ✅ IMMAGINE LOCALE
+    { source: './logo.png' },
     {
       caption:
         `✅ Benvenuto ${username}\n` +
@@ -35,7 +37,7 @@ bot.start(async (ctx) => {
             }
           ],
           [
-            { text: 'ℹ️ Informazioni', callback_data: 'INFO' }
+            { text: 'ℹ️ INFO & REGOLE MEETUP', callback_data: 'INFO' }
           ],
           [
             { text: '📸 Instagram', url: LINKS.instagram }
@@ -53,16 +55,23 @@ bot.start(async (ctx) => {
       }
     }
   )
+}
+
+// =======================
+// /START
+// =======================
+bot.start(async (ctx) => {
+  await sendMainMenu(ctx)
 })
 
 // =======================
-// CARD INFORMAZIONI
+// CARD INFO & REGOLE
 // =======================
 bot.action('INFO', async (ctx) => {
   await ctx.answerCbQuery()
 
-  await ctx.reply(
-    `ℹ️ *Servizi Disponibili*\n\n` +
+  await ctx.editMessageCaption(
+    `ℹ️ *INFO & REGOLE MEETUP*\n\n` +
       `🤝 *Meet Up*\n` +
       `▪️ Solo una persona all'incontro\n` +
       `▪️ Prenotarsi un giorno prima\n` +
@@ -83,18 +92,19 @@ bot.action('INFO', async (ctx) => {
 })
 
 // =======================
-// TORNA AL MENU PRINCIPALE
+// BACK → MENU PRINCIPALE
 // =======================
 bot.action('BACK', async (ctx) => {
   await ctx.answerCbQuery()
-  return bot.start(ctx)
+  await ctx.deleteMessage()
+  await sendMainMenu(ctx)
 })
 
 // =======================
-// ERROR HANDLER (ANTI-CRASH)
+// ERROR HANDLER
 // =======================
 bot.catch((err) => {
-  console.error('BOT ERROR:', err)
+  console.error('❌ BOT ERROR:', err)
 })
 
 // =======================
